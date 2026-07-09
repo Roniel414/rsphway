@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RS PHWAY — Private Executive Transport</title>
+<style>
+  :root{
+    --black:#0B0B0C;
+    --charcoal:#1A1A1C;
+    --charcoal-2:#222225;
+    --gold:#C9A24B;
+    --gold-soft:#E4C77E;
+    --brass:#8A6F3E;
+    --bone:#F2EFE9;
+    --bone-dim:#B9B5AC;
+    --line:rgba(201,162,75,0.18);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--black);
+    color:var(--bone);
+    font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700;800&display=swap');
+
+  .display{font-family:'Playfair Display', Georgia, serif;}
+
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+
+  /* ===== NAV ===== */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 6vw;
+    background:linear-gradient(to bottom, rgba(11,11,12,0.95), rgba(11,11,12,0));
+    backdrop-filter:blur(6px);
+  }
+  .brand{
+    font-family:'Playfair Display', serif;
+    font-weight:700;
+    font-size:1.3rem;
+    letter-spacing:0.04em;
+    color:var(--bone);
+  }
+  .brand span{color:var(--gold);}
+  .nav-cta{
+    border:1px solid var(--gold);
+    color:var(--gold);
+    padding:10px 22px;
+    border-radius:2px;
+    font-size:0.82rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    transition:background 0.25s, color 0.25s;
+  }
+  .nav-cta:hover{background:var(--gold); color:var(--black);}
+
+  /* ===== HERO ===== */
+  .hero{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:140px 6vw 80px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 0%, rgba(201,162,75,0.08), transparent 70%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    color:var(--gold);
+    font-size:0.78rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    margin-bottom:28px;
+    opacity:0;
+    animation:fadeUp 0.8s ease forwards;
+    animation-delay:0.1s;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 6.5vw, 5.2rem);
+    font-weight:700;
+    line-height:1.05;
+    max-width:900px;
+    color:var(--bone);
+    opacity:0;
+    animation:fadeUp 0.9s ease forwards;
+    animation-delay:0.25s;
+  }
+  .hero h1 em{
+    font-style:italic;
+    color:var(--gold-soft);
+  }
+  .hero p.sub{
+    margin-top:24px;
+    font-size:1.05rem;
+    color:var(--bone-dim);
+    max-width:520px;
+    font-weight:400;
+    opacity:0;
+    animation:fadeUp 0.9s ease forwards;
+    animation-delay:0.4s;
+  }
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(18px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  /* Route line signature element */
+  .route{
+    margin-top:64px;
+    width:100%;
+    max-width:560px;
+    opacity:0;
+    animation:fadeUp 1s ease forwards;
+    animation-delay:0.55s;
+  }
+  .route-track{
+    position:relative;
+    height:2px;
+    background:linear-gradient(90deg, var(--gold) 0%, var(--gold) 100%);
+    opacity:0.35;
+  }
+  .route-track::before, .route-track::after{
+    content:'';
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:11px; height:11px;
+    border-radius:50%;
+    background:var(--gold);
+    box-shadow:0 0 14px rgba(201,162,75,0.6);
+  }
+  .route-track::before{left:-2px;}
+  .route-track::after{right:-2px;}
+  .route-labels{
+    display:flex; justify-content:space-between;
+    margin-top:14px;
+    font-size:0.72rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--bone-dim);
+  }
+  .route-car{
+    position:absolute;
+    top:50%;
+    left:0;
+    transform:translate(-50%, -50%);
+    font-size:1rem;
+    animation:driveAcross 3.2s ease-in-out 1.3s 1 forwards;
+  }
+  @keyframes driveAcross{
+    0%{left:0%;}
+    100%{left:100%;}
+  }
+
+  .hero-cta{
+    margin-top:48px;
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+    justify-content:center;
+    opacity:0;
+    animation:fadeUp 1s ease forwards;
+    animation-delay:0.7s;
+  }
+  .btn-primary{
+    background:var(--gold);
+    color:var(--black);
+    font-weight:600;
+    font-size:0.88rem;
+    letter-spacing:0.04em;
+    padding:16px 36px;
+    border-radius:2px;
+    transition:background 0.25s, transform 0.2s;
+  }
+  .btn-primary:hover{background:var(--gold-soft); transform:translateY(-1px);}
+  .btn-ghost{
+    border:1px solid rgba(242,239,233,0.25);
+    color:var(--bone);
+    font-weight:500;
+    font-size:0.88rem;
+    padding:16px 30px;
+    border-radius:2px;
+    transition:border-color 0.25s, background 0.25s;
+  }
+  .btn-ghost:hover{border-color:var(--bone); background:rgba(242,239,233,0.05);}
+
+  /* ===== SECTION SHARED ===== */
+  section{padding:110px 6vw;}
+  .section-head{
+    text-align:center;
+    max-width:640px;
+    margin:0 auto 64px;
+  }
+  .section-eyebrow{
+    color:var(--gold);
+    font-size:0.74rem;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    margin-bottom:16px;
+  }
+  .section-head h2{
+    font-size:clamp(1.9rem, 3.6vw, 2.7rem);
+    font-weight:600;
+    color:var(--bone);
+  }
+  .section-head p{
+    margin-top:16px;
+    color:var(--bone-dim);
+    font-size:1rem;
+  }
+
+  /* ===== RATES ===== */
+  .rates{background:var(--charcoal);}
+  .rate-grid{
+    max-width:1100px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .rate-card{
+    background:var(--charcoal);
+    padding:40px 32px;
+  }
+  .rate-card .label{
+    font-size:0.74rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:18px;
+  }
+  .rate-card .price{
+    font-family:'Playfair Display', serif;
+    font-size:2.4rem;
+    font-weight:600;
+    color:var(--bone);
+    line-height:1;
+  }
+  .rate-card .price small{
+    font-family:'Inter', sans-serif;
+    font-size:0.9rem;
+    font-weight:400;
+    color:var(--bone-dim);
+    margin-left:6px;
+  }
+  .rate-card ul{
+    margin-top:22px;
+    list-style:none;
+    color:var(--bone-dim);
+    font-size:0.88rem;
+  }
+  .rate-card li{
+    padding:7px 0;
+    border-top:1px solid var(--line);
+  }
+  .rate-card li:first-child{border-top:none;}
+  .surcharge-note{
+    max-width:1100px;
+    margin:28px auto 0;
+    text-align:center;
+    font-size:0.84rem;
+    color:var(--bone-dim);
+  }
+  .surcharge-note strong{color:var(--gold-soft); font-weight:500;}
+
+  /* ===== HOW IT WORKS ===== */
+  .flow{
+    max-width:1000px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:0;
+  }
+  .flow-step{
+    padding:0 28px;
+    border-left:1px solid var(--line);
+    position:relative;
+  }
+  .flow-step:first-child{border-left:none; padding-left:0;}
+  .flow-step .mark{
+    width:34px; height:34px;
+    border:1px solid var(--gold);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--gold);
+    font-family:'Playfair Display', serif;
+    font-size:0.95rem;
+    margin-bottom:20px;
+  }
+  .flow-step h3{
+    font-size:1.08rem;
+    font-weight:600;
+    margin-bottom:10px;
+    color:var(--bone);
+  }
+  .flow-step p{
+    color:var(--bone-dim);
+    font-size:0.92rem;
+  }
+
+  /* ===== BOOKING ===== */
+  .booking{background:var(--charcoal);}
+  .booking-shell{
+    max-width:900px;
+    margin:0 auto;
+    border:1px solid var(--line);
+    background:var(--black);
+    border-radius:3px;
+    overflow:hidden;
+  }
+  .booking-head{
+    padding:28px 32px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .booking-head h3{
+    font-family:'Playfair Display', serif;
+    font-size:1.3rem;
+    color:var(--bone);
+  }
+  .booking-head .tag{
+    font-size:0.72rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--gold);
+    border:1px solid var(--gold);
+    padding:6px 14px;
+    border-radius:2px;
+  }
+  .calendly-frame{
+    width:100%;
+    height:780px;
+    border:none;
+    background:var(--bone);
+  }
+  .booking-note{
+    padding:20px 32px;
+    font-size:0.82rem;
+    color:var(--bone-dim);
+    border-top:1px solid var(--line);
+  }
+
+  /* ===== POLICY ===== */
+  .policy{
+    max-width:760px;
+    margin:0 auto;
+  }
+  .policy-block{margin-bottom:36px;}
+  .policy-block h3{
+    font-size:0.78rem;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:16px;
+  }
+  .policy-block ul{
+    list-style:none;
+    color:var(--bone-dim);
+    font-size:0.92rem;
+  }
+  .policy-block li{
+    padding:9px 0 9px 20px;
+    border-top:1px solid var(--line);
+    position:relative;
+  }
+  .policy-block li:first-child{border-top:none;}
+  .policy-block li::before{
+    content:'—';
+    position:absolute;
+    left:0;
+    color:var(--brass);
+  }
+
+  /* ===== FOOTER ===== */
+  footer{
+    padding:48px 6vw 40px;
+    border-top:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:16px;
+  }
+  footer .brand{font-size:1.1rem;}
+  footer .meta{
+    font-size:0.82rem;
+    color:var(--bone-dim);
+    text-align:right;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width:760px){
+    .rate-grid{grid-template-columns:1fr;}
+    .flow{grid-template-columns:1fr; gap:32px;}
+    .flow-step{border-left:none; padding-left:0; border-top:1px solid var(--line); padding-top:28px;}
+    .flow-step:first-child{border-top:none; padding-top:0;}
+    .calendly-frame{height:680px;}
+    footer{flex-direction:column; align-items:flex-start; text-align:left;}
+    footer .meta{text-align:left;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-delay:0ms !important;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">RS <span>PHWAY</span></div>
+  <a href="#book" class="nav-cta">Reserve</a>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow">Private Executive Transport</div>
+  <h1 class="display">Your route, <em>reserved</em>.<br>Your time, respected.</h1>
+  <p class="sub">Black-truck executive service by advance reservation. Every booking holds your exact window — no overlaps, no guesswork.</p>
+
+  <div class="route">
+    <div class="route-track">
+      <div class="route-car">🚙</div>
+    </div>
+    <div class="route-labels">
+      <span>Pickup</span>
+      <span>Drop-off</span>
+    </div>
+  </div>
+
+  <div class="hero-cta">
+    <a href="#book" class="btn-primary">Reserve Your Ride</a>
+    <a href="#rates" class="btn-ghost">View Rates</a>
+  </div>
+</section>
+
+<section class="rates" id="rates">
+  <div class="section-head">
+    <div class="section-eyebrow">Rate Structure</div>
+    <h2 class="display">Built for clarity</h2>
+    <p>Mileage-based pricing with no hidden math. Premiums apply only when conditions call for them.</p>
+  </div>
+
+  <div class="rate-grid">
+    <div class="rate-card">
+      <div class="label">Standard Transfer</div>
+      <div class="price">$3<small>/ mile + gratuity</small></div>
+      <ul>
+        <li>Point-to-point reservation</li>
+        <li>Up to 5 passengers</li>
+        <li>Black truck, executive class</li>
+      </ul>
+    </div>
+    <div class="rate-card">
+      <div class="label">Hourly Service</div>
+      <div class="price">$100<small>/ hour</small></div>
+      <ul>
+        <li>2-hour minimum</li>
+        <li>$100 non-refundable deposit</li>
+        <li>Ideal for multi-stop days</li>
+      </ul>
+    </div>
+    <div class="rate-card">
+      <div class="label">Airport Transfer</div>
+      <div class="price">Quoted<small>by route</small></div>
+      <ul>
+        <li>Half fare due to confirm</li>
+        <li>Full prepay inside 3-hr notice</li>
+        <li>Flight-aware scheduling</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="surcharge-note">Early (before 8 AM) and late (after 7 PM) departures add <strong>+$1/mile</strong>. Peak-demand windows (6:30–9:30 AM, 3:30–7 PM) may add <strong>+$1–$2/mile</strong>. Tolls, parking, and extended waits billed separately.</p>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-eyebrow">How It Works</div>
+    <h2 class="display">Three steps to confirmed</h2>
+  </div>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="mark">1</div>
+      <h3>Pick your window</h3>
+      <p>Choose pickup date and time on the live calendar below. Availability reflects real-time schedule, not estimates.</p>
+    </div>
+    <div class="flow-step">
+      <div class="mark">2</div>
+      <h3>Confirm with payment</h3>
+      <p>After booking, you'll receive a secure payment link for your deposit or full fare based on service type.</p>
+    </div>
+    <div class="flow-step">
+      <div class="mark">3</div>
+      <h3>Ride, reserved</h3>
+      <p>Your slot is locked. Any route-specific balance settles after the trip — no surprises, no math required.</p>
+    </div>
+  </div>
+</section>
+
+<section class="booking" id="book">
+  <div class="section-head">
+    <div class="section-eyebrow">Reserve</div>
+    <h2 class="display">Check availability</h2>
+    <p>Select your time below. A payment link follows once your window is confirmed.</p>
+  </div>
+
+  <div class="booking-shell">
+    <div class="booking-head">
+      <h3>Private Ride Reservation</h3>
+      <span class="tag">Live Calendar</span>
+    </div>
+    <iframe class="calendly-frame" src="https://calendly.com/roniel414/privaterides?hide_event_type_details=1&background_color=0b0b0c&text_color=f2efe9&primary_color=c9a24b" title="Book a private ride with RS PHWAY"></iframe>
+    <div class="booking-note">
+      After selecting your time, complete your deposit below to lock in your reservation. Reservations are not confirmed until deposit is received.
+    </div>
+    <div style="padding:28px 32px;border-top:1px solid rgba(201,162,75,0.18);text-align:center;">
+      <a href="https://square.link/u/MjV4TsLB?src=sheet" target="_blank" style="display:inline-block;background:#C9A24B;color:#0B0B0C;font-family:Inter,sans-serif;font-weight:700;font-size:0.88rem;letter-spacing:0.1em;text-transform:uppercase;padding:16px 48px;text-decoration:none;">Pay Deposit to Confirm &rarr;</a>
+      <p style="margin-top:14px;font-size:0.76rem;color:#8A6F3E;font-weight:300;">Secure payment powered by Square</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-eyebrow">Reservation Policy</div>
+    <h2 class="display">The fine print, in plain terms</h2>
+  </div>
+
+  <div class="policy">
+    <div class="policy-block">
+      <h3>Confirmation & Payment</h3>
+      <ul>
+        <li>All service is by advance reservation only</li>
+        <li>Airport transfers require half fare to confirm</li>
+        <li>Same-day airport (within 3 hours) requires full prepayment</li>
+        <li>Hourly service requires a $100 non-refundable deposit</li>
+        <li>Reservations are not secured until payment is received</li>
+        <li>Deposits apply to the final balance unless forfeited under cancellation terms</li>
+      </ul>
+    </div>
+    <div class="policy-block">
+      <h3>Additional Charges</h3>
+      <ul>
+        <li>Extended wait time, extra stops, and route deviations</li>
+        <li>Tolls, parking, and holiday service</li>
+        <li>Special accommodations or extraordinary requests</li>
+      </ul>
+    </div>
+    <div class="policy-block">
+      <h3>Vehicle</h3>
+      <ul>
+        <li>Black truck, executive class</li>
+        <li>Maximum 5 passengers per reservation</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="brand">RS <span style="color:var(--gold);">PHWAY</span></div>
+  <div class="meta">Private Executive Transport<br>Reservations by appointment only</div>
+</footer>
+
+</body>
+</html>
